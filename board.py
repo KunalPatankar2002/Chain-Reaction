@@ -1,76 +1,58 @@
-import sys
-import pygame
-from pygame.locals import KEYDOWN, K_q
+# author: Cherubim anand
+# PVP Chain reaction game developed using tkinter
 
-# CONSTANTS:
-SCREENSIZE = WIDTH, HEIGHT = 600, 400
-BLACK = (0, 0, 0)
-GREY = (160, 160, 160)
-# VARS:
-_VARS = {'surf': False}
+import tkinter as t
+import tkinter.font
 
 
-def main():
-    pygame.init()
-    _VARS['surf'] = pygame.display.set_mode(SCREENSIZE)
-    while True:
-        checkEvents()
-        _VARS['surf'].fill(GREY)
-        drawGrid(8)
-        pygame.display.update()
+# resets up the board for new game
+def resetBoard():
+    turn.set(0)
+
+    # reset notification button
+    turnNote.set("It's player " + str(turn.get() + 1) + "'s turn!")
+
+    for x in range(rowSize):
+        for y in range(colSize):
+            value = 0
+            val[x][y] = t.StringVar()
+            btn[x][y] = t.Button(frame, textvariable=val[x][y], command=lambda x=x, y=y: add(x, y))
+            btn[x][y]["width"] = 6
+            btn[x][y]["height"] = 3
+            btn[x][y]["bg"] = "black"
+            btn[x][y]["fg"] = "blue"
+            btn[x][y]["activebackground"] = "white"
+            btn[x][y]["activeforeground"] = "white"
+
+            val[x][y].set(value)
+            btn[x][y].grid(row=x, column=y)
 
 
-def drawGrid(divisions):
+window = t.Tk()
 
-    CONTAINER_WIDTH_HEIGHT = 300  # Not to be confused with SCREENSIZE
-    cont_x, cont_y = 10, 10  # TOP LEFT OF CONTAINER
+# variable to toggle turns
+turn = t.IntVar()
 
-    # DRAW Grid Border:
-    # TOP lEFT TO RIGHT
-    pygame.draw.line(
-      _VARS['surf'], BLACK,
-      (cont_x, cont_y),
-      (CONTAINER_WIDTH_HEIGHT + cont_x, cont_y), 2)
-    # # BOTTOM lEFT TO RIGHT
-    pygame.draw.line(
-      _VARS['surf'], BLACK,
-      (cont_x, CONTAINER_WIDTH_HEIGHT + cont_y),
-      (CONTAINER_WIDTH_HEIGHT + cont_x, CONTAINER_WIDTH_HEIGHT + cont_y), 2)
-    # # LEFT TOP TO BOTTOM
-    pygame.draw.line(
-      _VARS['surf'], BLACK,
-      (cont_x, cont_y),
-      (cont_x, cont_y + CONTAINER_WIDTH_HEIGHT), 2)
-    # # RIGHT TOP TO BOTTOM
-    pygame.draw.line(
-      _VARS['surf'], BLACK,
-      (CONTAINER_WIDTH_HEIGHT + cont_x, cont_y),
-      (CONTAINER_WIDTH_HEIGHT + cont_x, CONTAINER_WIDTH_HEIGHT + cont_y), 2)
+# Button to reset game
+t.Button(window, text="RESET", command=resetBoard).pack()
 
-    # Get cell size, just one since its a square grid.
-    cellSize = CONTAINER_WIDTH_HEIGHT/divisions
+# String variable to notify which player's turn
+turnNote = t.StringVar()
 
-    # VERTICAL DIVISIONS: (0,1,2) for grid(3) for example
-    for x in range(divisions):
-        pygame.draw.line(
-           _VARS['surf'], BLACK,
-           (cont_x + (cellSize * x), cont_y),
-           (cont_x + (cellSize * x), CONTAINER_WIDTH_HEIGHT + cont_y), 2)
-    # # HORIZONTAl DIVISIONS
-        pygame.draw.line(
-          _VARS['surf'], BLACK,
-          (cont_x, cont_y + (cellSize*x)),
-          (cont_x + CONTAINER_WIDTH_HEIGHT, cont_y + (cellSize*x)), 2)
+# Label to show turnNote
+t.Label(window, textvariable=turnNote).pack()
 
+# frame to organize elements
+frame = t.Frame(window)
+frame.pack()
 
-def checkEvents():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
-        elif event.type == KEYDOWN and event.key == K_q:
-            pygame.quit()
-            sys.exit()
+# set the dimensions of the board
+rowSize = 8
+colSize = 6
 
+btn = [[0 for y in range(colSize)] for x in range(rowSize)]
+val = [[0 for y in range(colSize)] for x in range(rowSize)]
 
-if __name__ == '_main_':
-    main()
+resetBoard()
+
+window.mainloop()
