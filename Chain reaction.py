@@ -1,5 +1,4 @@
 import pprint
-from turtle import position
 
 class ChainReaction:
     
