@@ -1,6 +1,6 @@
 # Chain-Reaction
 
-
+Aman
 player identity separate
 can only add to own cell or empty cell
 
