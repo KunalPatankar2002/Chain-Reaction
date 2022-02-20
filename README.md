@@ -12,8 +12,5 @@ player switiching
 connect frontend and backend (need to pass player identity and cell position)
 
 
-Kunal 
-sort out the syntax problem when multiple cells meet the split condition at the same time
-
 
 Beautify the board
